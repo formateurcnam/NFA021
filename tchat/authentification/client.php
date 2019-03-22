@@ -3,16 +3,18 @@
     extract($_POST);
     try {
       $bdd = new PDO('mysql:host=localhost;dbname=tchat', 'root', '' );
-      $donnees = $bdd->prepare('SELECT id FROM  client WHERE pseudo = ?');
+      $donnees = $bdd->prepare('SELECT count(*) FROM  client where pseudo = ?');
       $donnees->execute(array($pseudo));
       $psd = $donnees->fetch();
-      if (password_verify($mdp, $donnees->mdp)) {
+
+     if ($psd == 0) {
         session_start();
         $_SESSION['auth'] = $pseudo;
         $_SESSION['flash']['success'] = "Vous êtes bien connecté au tchat";
         header('Location: ../tchat.php');
+
     }else {
-       $_SESSION['flash']['danger'] = "pseudo ou mot de passe incorrect";
+      die("pseudo ou mot de passe incorrect");
      }
     }
    catch (PDOException $e) {
