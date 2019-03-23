@@ -7,7 +7,8 @@ if (isset($_POST['envoyer'])) {
     $psw = password_hash($mdp, PASSWORD_BCRYPT);
     if ($mdp == $mdp2) {
       $donnees->execute(array($pseudo, $mail,$psw));
-      header('Location: ../tchat.php');
+      echo "Votre compte  à bien été créé";
+      header('Location: ../authentification/client.php');
     }else {
       echo "mot de passe non valide";
     }
