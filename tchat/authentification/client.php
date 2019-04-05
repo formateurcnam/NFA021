@@ -1,23 +1,21 @@
 <?php
+session_start();
   if (isset($_POST['connexion'])) {
     extract($_POST);
     try {
       $bdd = new PDO('mysql:host=localhost;dbname=tchat', 'root', '' );
-      $donnees = $bdd->prepare('SELECT count(*) FROM  client where pseudo = ?');
-      //$donnees->execute(array($pseudo));
-      // $psd = $donnees->fetch();
+      $donnees = $bdd->prepare('SELECT pseudo, mdp FROM  client where pseudo = ? and mdp = ?');
+      $mdp = sha1($mdp);
+      $donnees->execute(array($pseudo, $mdp));
 
-     if ($donnees->execute(array($pseudo)) == 0) {
-        session_start();
+      if ($donnees->rowCount() == 1) { 
         $_SESSION['auth'] = $pseudo;
-        $_SESSION['flash']['success'] = "Vous êtes bien connecté au tchat";
-        header('Location: ../tchat.php');
+      header('Location: ../tchat.php');
 
     }else {
-      die("pseudo ou mot de passe incorrect");
-      header('Location: ../authentification/client.php');
-     }
+      header('Location: ../inscription/client.php');
     }
+  }
    catch (PDOException $e) {
       die('Erreur : ' .$e->getMessage());
    }
@@ -32,3 +30,4 @@
   <a href="../inscription/client.php">Pas encore inscrit ?</a><br><br>
   <input type="submit" name="connexion" value="Se connecter >">
 </form>
+JJ

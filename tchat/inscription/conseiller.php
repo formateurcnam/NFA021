@@ -4,7 +4,7 @@ if (isset($_POST['envoyer'])) {
   try {
     $bdd = new PDO('mysql:host=localhost;dbname=tchat', 'root', '' );
     $donnees = $bdd->prepare('INSERT INTO conseiller VALUES(defauLt, ?, ?, ?,?)');
-    $psw = password_hash($mdp, PASSWORD_BCRYPT);
+    $psw = sha1($mdp);
     if ($mdp == $mdp2) {
       $donnees->execute(array($nom, $prenom,   $mail,$psw));
       echo "Votre compte  à bien été créé";
