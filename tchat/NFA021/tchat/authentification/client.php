@@ -8,7 +8,7 @@ session_start();
       $mdp = sha1($mdp);
       $donnees->execute(array($pseudo, $mdp));
 
-      if ($donnees->rowCount() == 1) {
+      if ($donnees->rowCount() == 1) { 
         $_SESSION['auth'] = $pseudo;
       header('Location: ../tchat.php');
 
